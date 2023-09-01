@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <string>
 
 using namespace std;
 
@@ -27,6 +28,16 @@ int main()
                 board[i][j] = 0;
             }
         }
+
+        // enums:
+        enum CertificationLevels
+        {
+            ECT,
+            Trainee,
+            Diploma
+        };
+
+        cout << Trainee << endl;
 
         // Random numbers:
         cout << "A random number: " << rand() << endl;
