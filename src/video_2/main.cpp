@@ -2,6 +2,16 @@
 #include <ctime>
 #include <string>
 
+// Pre-processor directives:
+#define SIZE_OF_BUFFER 1000 // Define a macro
+#undef SIZE_OF_BUFFER       // Un-define a macro
+
+#ifdef SIZE_OF_BUFFER
+int buffer[SIZE_OF_BUFFER];
+#else
+int buffer[100];
+#endif
+
 using namespace std;
 
 int main()
@@ -32,12 +42,36 @@ int main()
         // enums:
         enum CertificationLevels
         {
-            ECT,
-            Trainee,
-            Diploma
+            ECT = 1,
+            Trainee = 2,
+            Diploma = 3
         };
 
-        cout << Trainee << endl;
+        CertificationLevels level;
+        level = Trainee;
+        cout << "Level: " << level << endl;
+
+        // You can loop over enums like so:
+        for (int n = ECT; n <= Diploma; n++)
+        {
+            // Cannot increment the enum values themselves, so we need to use an integer iterator
+            switch (n)
+            {
+            case ECT:
+                cout << "ECT" << endl;
+                break;
+            case Trainee:
+                cout << "Trainee" << endl;
+                break;
+            default:
+                cout << "Diploma" << endl;
+            }
+        }
+
+        // Casting enums:
+        CertificationLevels randomLevel;
+        randomLevel = (CertificationLevels)((rand() % 3) + 1); // Cast an integer to my enum type.
+        cout << "Random level: " << randomLevel << endl;
 
         // Random numbers:
         cout << "A random number: " << rand() << endl;
