@@ -59,7 +59,7 @@ void runTests()
     isLeapYear(2000) == true ? cout << "isLeapYear(2000):\tpassed!" << endl : cout << "isLeapYear(2000):\tfailed..." << endl;
 
     intToDay(2) == "Monday" ? cout << "intToDay(2):\tpassed!" << endl : cout << "intToDay(2):\tfailed..." << endl;
-    intToDay(-1) == "Invalid input" ? cout << "intToDay(2):\tpassed!" << endl : cout << "intToDay(-1):\tfailed..." << endl;
+    intToDay(-1) == "Invalid input" ? cout << "intToDay(-1):\tpassed!" << endl : cout << "intToDay(-1):\tfailed..." << endl;
 
     return;
 }
