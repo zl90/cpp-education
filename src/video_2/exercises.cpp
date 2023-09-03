@@ -20,8 +20,14 @@ int factorial(int n)
 signed int abs(signed int n)
 {
     int result;
-    (n < 0) ? result = n *-1 : result = n;
+    (n < 0) ? result = n * (-1) : result = n;
     return result;
+}
+
+// Exercise 10: Write a program that checks if a given year is a leap year (divisible by 4 and not divisible by 100, unless divisible by 400) using logical operators.
+bool isLeapYear(int year)
+{
+    return (year % 4 == 0) && ((year % 400 == 0) || (year % 100 != 0));
 }
 
 void runTests()
@@ -30,8 +36,13 @@ void runTests()
     factorial(4) == 24 ? cout << "factorial(4):\tpassed!" << endl : cout << "factorial(4):\tfailed..." << endl;
     factorial(-1) == 1 ? cout << "factorial(-1):\tpassed!" << endl : cout << "factorial(-1):\tfailed..." << endl;
 
-    abs(-10) == 10 ? cout << "abs(-10):\tpassed!" << endl : cout << "abs(-10):\tfailed... " << abs(-10) << endl;
+    abs(-10) == 10 ? cout << "abs(-10):\tpassed!" << endl : cout << "abs(-10):\tfailed... " << endl;
     abs(5) == 5 ? cout << "abs(5):\t\tpassed!" << endl : cout << "abs(5):\tfailed..." << endl;
+
+    isLeapYear(4) == true ? cout << "isLeapYear(4):\tpassed!" << endl : cout << "isLeapYear(4):\tfailed..." << endl;
+    isLeapYear(400) == true ? cout << "isLeapYear(400):\tpassed!" << endl : cout << "isLeapYear(400):\tfailed..." << endl;
+    isLeapYear(300) == false ? cout << "isLeapYear(300):\tpassed!" << endl : cout << "isLeapYear(300):\tfailed..." << endl;
+    isLeapYear(2000) == true ? cout << "isLeapYear(2000):\tpassed!" << endl : cout << "isLeapYear(2000):\tfailed..." << endl;
 
     return;
 }
