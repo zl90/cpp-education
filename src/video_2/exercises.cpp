@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <stdexcept>
 
 using namespace std;
 
@@ -30,6 +31,19 @@ bool isLeapYear(int year)
     return (year % 4 == 0) && ((year % 400 == 0) || (year % 100 != 0));
 }
 
+// Exercise 16: Define a static array for the days of the week. Write a program that takes a number (1-7) as input and prints the corresponding day of the week.
+string days[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+
+string intToDay(int n)
+{
+    if (n <= 0 || n > 7)
+    {
+        return "Invalid input";
+    };
+
+    return days[n - 1];
+}
+
 void runTests()
 {
     factorial(0) == 1 ? cout << "factorial(0):\tpassed!" << endl : cout << "factorial(0):\tfailed..." << endl;
@@ -43,6 +57,9 @@ void runTests()
     isLeapYear(400) == true ? cout << "isLeapYear(400):\tpassed!" << endl : cout << "isLeapYear(400):\tfailed..." << endl;
     isLeapYear(300) == false ? cout << "isLeapYear(300):\tpassed!" << endl : cout << "isLeapYear(300):\tfailed..." << endl;
     isLeapYear(2000) == true ? cout << "isLeapYear(2000):\tpassed!" << endl : cout << "isLeapYear(2000):\tfailed..." << endl;
+
+    intToDay(2) == "Monday" ? cout << "intToDay(2):\tpassed!" << endl : cout << "intToDay(2):\tfailed..." << endl;
+    intToDay(-1) == "Invalid input" ? cout << "intToDay(2):\tpassed!" << endl : cout << "intToDay(-1):\tfailed..." << endl;
 
     return;
 }
