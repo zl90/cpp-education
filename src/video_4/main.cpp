@@ -41,6 +41,39 @@ void Animal::sleep()
     cout << name << " falls asleep. Zzzzz.\n";
 }
 
+// Inheritance:
+class Dog : public Animal
+{
+protected:
+    string breed;
+
+public:
+    Dog()
+    {
+        Animal();
+        name = "Dog";
+        breed = "Corgi";
+    }
+
+    Dog(string cBreed, int cAge, string cName)
+    {
+        name = cName;
+        breed = cBreed;
+        age = cAge;
+    }
+
+    void makeNoise()
+    {
+        cout << name << " barks loudly!\n";
+    }
+};
+
+// You can pass objects as pointers
+void passObjectByPointer(Animal *object)
+{
+    object->makeNoise();
+}
+
 int main()
 {
     // Creating and using static objects:
@@ -56,7 +89,15 @@ int main()
     Animal *falcon = new Animal(6, "Falcon");
     falcon->makeNoise(); // Dereference method
     falcon->sleep();
+    passObjectByPointer(falcon);
     delete (falcon); // Free the memory after use
+
+    // You can pass anonymous objects to functions:
+    passObjectByPointer(new Animal(4, "Aardvark"));
+
+    Dog *borderCollie = new Dog("Border Collie", 3, "Mr Bingles");
+    borderCollie->makeNoise();
+    borderCollie->sleep();
 
     return 0;
 }
