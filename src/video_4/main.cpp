@@ -3,7 +3,16 @@
 
 using namespace std;
 
-class Animal
+// Abstract class:
+class LivingThing
+{
+public:
+    virtual void makeNoise() = 0; // This class is now abstract.
+    // Abstract classes cannot be instantiated.
+    // All virtual methods must be overriden by child classes.
+};
+
+class Animal : public LivingThing
 {
 protected:
     int age;
