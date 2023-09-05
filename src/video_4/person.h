@@ -29,3 +29,15 @@ public:
         cout << "Running" << endl;
     }
 };
+
+// Exercise 2:
+class Soldier : public Person
+{
+public:
+    Soldier() {}
+
+    void FireWeapon()
+    {
+        cout << "Firing Weapon" << endl;
+    }
+};
