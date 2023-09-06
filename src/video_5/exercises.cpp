@@ -79,6 +79,14 @@ public:
 
 int GameObject::instanceCount = 0;
 
+template <typename T>
+
+void expect(string name, T lhs, T rhs)
+{
+    lhs == rhs ? cout << "\033[32m" << name << ":\tpassed!\n" : cout << "\033[31m" << name << ":\tfailed...\n";
+    cout << "\033[0m";
+}
+
 void runTests()
 {
     GameObject obj1(100, new Location(1, 1, 1));
@@ -95,7 +103,9 @@ void runTests()
 
     obj2.location->x == 2 ? cout << "\033[32mTest6:\tpassed!\n" : cout << "\033[31mTest6:\tfailed...\n";
     obj6.location->x == 8 ? cout << "\033[32mTest7:\tpassed!\n" : cout << "\033[31mTest7:\tfailed...\n";
-    cout << "\033[0m";
+
+    expect("Test8", obj2.location->x, 3);
+    expect("Test9", obj2.location->x, 2);
 }
 
 int main()
