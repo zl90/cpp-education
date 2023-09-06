@@ -85,16 +85,17 @@ void runTests()
     GameObject obj2(45, new Location(2, 2, 2));
     GameObject obj6 = obj2;
 
-    obj1.id == 100 ? cout << "Test1:\tpassed!\n" : cout << "Test1:\tfailed...\n";
-    obj2.id == 45 ? cout << "Test2:\tpassed!\n" : cout << "Test2:\tfailed...\n";
-    GameObject::instanceCount == 3 ? cout << "Test3:\tpassed!\n" : cout << "Test3:\tfailed...\n";
-    obj1.location->x == 1 ? cout << "Test4:\tpassed!\n" : cout << "Test4:\tfailed...\n";
-    obj2.location->x == 2 ? cout << "Test5:\tpassed!\n" : cout << "Test5:\tfailed...\n";
+    obj1.id == 100 ? cout << "\033[32mTest1:\tpassed!\n" : cout << "\033[31mTest1:\tfailed...\n";
+    obj2.id == 45 ? cout << "\033[32mTest2:\tpassed!\n" : cout << "\033[31mTest2:\tfailed...\n";
+    GameObject::instanceCount == 3 ? cout << "\033[32mTest3:\tpassed!\n" : cout << "\033[31mTest3:\tfailed...\n";
+    obj1.location->x == 1 ? cout << "\033[32mTest4:\tpassed!\n" : cout << "\033[31mTest4:\tfailed...\n";
+    obj2.location->x == 2 ? cout << "\033[32mTest5:\tpassed!\n" : cout << "\033[31mTest5:\tfailed...\n";
 
     obj6.location->Set(8, 8, 8);
 
-    obj2.location->x == 2 ? cout << "Test6:\tpassed!\n" : cout << "Test6:\tfailed...\n";
-    obj6.location->x == 8 ? cout << "Test7:\tpassed!\n" : cout << "Test7:\tfailed...\n";
+    obj2.location->x == 2 ? cout << "\033[32mTest6:\tpassed!\n" : cout << "\033[31mTest6:\tfailed...\n";
+    obj6.location->x == 8 ? cout << "\033[32mTest7:\tpassed!\n" : cout << "\033[31mTest7:\tfailed...\n";
+    cout << "\033[0m";
 }
 
 int main()
