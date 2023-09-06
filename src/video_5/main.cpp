@@ -70,10 +70,25 @@ public:
 class NPC
 {
 public:
-    NPC() {}
+    int *age;
+
+    NPC()
+    {
+        age = new int(20);
+    }
+
     NPC(const NPC &obj)
     {
-        cout << "Copy constructor invoked" << endl;
+        this->age = obj.age; // Shallow copy pointer.
+
+        cout << "Shallow copy constructor invoked" << endl;
+    }
+
+    NPC(const NPC &obj, int dummy)
+    {
+        age = new int(*obj.age); // Allocate new memory for a deep copy.
+
+        cout << "Deep copy constructor invoked" << endl;
     }
 
     void Perform(Command &c)
@@ -91,8 +106,16 @@ int main()
     cmd.Print();
     npc.Perform(cmd); // Passing objects by reference
 
-    NPC npc2(npc);  // Invokes the copy constructor
-    NPC npc3 = npc; // Invokes the copy constructor
+    NPC npc2(npc);    // Invokes the copy constructor
+    NPC npc3 = npc;   // Invokes the copy constructor
+    NPC npc4(npc, 0); // Invoke deep copy constructor
+    *npc3.age = 25;
+    cout << *npc2.age << endl;
+    cout << *npc3.age << endl;
+    cout << *npc4.age << endl;
+    cout << npc2.age << endl; // These two point to the same memory address
+    cout << npc3.age << endl; // These two point to the same memory address
+    cout << npc4.age << endl; // This one points to a different memory address.
 
     return 0;
 }
