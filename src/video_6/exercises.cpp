@@ -62,9 +62,20 @@ void runTests()
     Boat *b1 = new Boat(2, 50);
     Car *c1 = new Car(3, 40);
 
+    // Exercise 3: static array of pointers
+    Vehicle *vehicles[5];
+    vehicles[0] = new Car(1, 35);
+    vehicles[1] = new Boat(2, 55);
+    vehicles[2] = new Vehicle(3, 30);
+    vehicles[3] = new Car(4, 25);
+    vehicles[4] = new Boat(5, 65);
+
     expect("Test1", v1->Display(), "id = 1, damage = 30\n");
     expect("Test2", b1->Display(), "id = 2, damage = 50\n");
     expect("Test3", c1->Display(), "id = 3, damage = 40\n");
+    expect("Test4", vehicles[3]->Display(), "id = 4, damage = 25\n");
+    expect("Test5", vehicles[1]->Display(), "id = 2, damage = 55\n");
+    expect("Test6", vehicles[0]->Display(), "id = 1, damage = 35\n");
 }
 
 int main()
