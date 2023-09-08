@@ -8,7 +8,7 @@ using namespace std;
 template <typename T, typename K>
 void expect(string name, T lhs, K rhs)
 {
-    lhs == rhs ? cout << "\033[32m" << name << ":\tpassed!\n" : cout << "\033[31m" << name << ":\tfailed...\n";
+    lhs == rhs ? cout << "\033[32m" << name << ":\tpassed!\n" : cout << "\033[31m" << name << ":\tfailed...\n\texpected: " << rhs << "\n\treceived: " << lhs << "\n";
     cout << "\033[0m";
 }
 
@@ -30,7 +30,7 @@ public:
     string Display()
     {
         stringstream output;
-        output << "id = " << id << ", damage = " << damage << "\n";
+        output << "id = " << id << ", damage = " << damage;
         return output.str();
     }
 };
@@ -72,12 +72,12 @@ void runTests()
     vehicles[3] = new Car(4, 25);
     vehicles[4] = new Boat(5, 65);
 
-    expect("Test1", v1->Display(), "id = 1, damage = 30\n");
-    expect("Test2", b1->Display(), "id = 2, damage = 50\n");
-    expect("Test3", c1->Display(), "Car: id = 3, damage = 40\n");
-    expect("Test4", vehicles[3]->Display(), "Car: id = 4, damage = 25\n");
-    expect("Test5", vehicles[1]->Display(), "id = 2, damage = 55\n");
-    expect("Test6", vehicles[0]->Display(), "Car: id = 1, damage = 35\n");
+    expect("Test1", v1->Display(), "id = 1, damage = 30");
+    expect("Test2", b1->Display(), "id = 2, damage = 50");
+    expect("Test3", c1->Display(), "Car: id = 3, damage = 40");
+    expect("Test4", vehicles[3]->Display(), "Car: id = 4, damage = 25");
+    expect("Test5", vehicles[1]->Display(), "id = 2, damage = 55");
+    expect("Test6", vehicles[0]->Display(), "Car: id = 1, damage = 35");
 }
 
 int main()
