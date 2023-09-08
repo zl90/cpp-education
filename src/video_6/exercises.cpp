@@ -50,9 +50,11 @@ class Car : public Vehicle
 {
 public:
     Car(int id, int damage) : Vehicle(id, damage) {}
+
+    // Exercise 4: polymorphism
     string Display()
     {
-        return Vehicle::Display();
+        return "Car: " + Vehicle::Display();
     }
 };
 
@@ -72,10 +74,10 @@ void runTests()
 
     expect("Test1", v1->Display(), "id = 1, damage = 30\n");
     expect("Test2", b1->Display(), "id = 2, damage = 50\n");
-    expect("Test3", c1->Display(), "id = 3, damage = 40\n");
-    expect("Test4", vehicles[3]->Display(), "id = 4, damage = 25\n");
+    expect("Test3", c1->Display(), "Car: id = 3, damage = 40\n");
+    expect("Test4", vehicles[3]->Display(), "Car: id = 4, damage = 25\n");
     expect("Test5", vehicles[1]->Display(), "id = 2, damage = 55\n");
-    expect("Test6", vehicles[0]->Display(), "id = 1, damage = 35\n");
+    expect("Test6", vehicles[0]->Display(), "Car: id = 1, damage = 35\n");
 }
 
 int main()
