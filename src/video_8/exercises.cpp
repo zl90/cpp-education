@@ -110,6 +110,12 @@ void runTests()
     GameObject obj(114, 2, 2, 3);
 
     expect("Test7", (obj.*drawPtr)(), "GameObject 114");
+
+    int *(GameObject::*movePtr)(int, int, int) = &GameObject::Move;
+
+    expect("Test8", (obj.*movePtr)(1, 1, 1)[0], 3);
+    expect("Test9", (obj.*movePtr)(0, 0, 0)[1], 3);
+    expect("Test10", (obj.*movePtr)(0, 0, 0)[2], 4);
 }
 
 int main()
