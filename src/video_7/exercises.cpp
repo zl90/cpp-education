@@ -92,6 +92,55 @@ public:
     }
 };
 
+class Elementalist : public Wizard
+{
+public:
+    static enum TElements {
+        earth,
+        wind,
+        fire,
+        water
+    };
+
+private:
+    TElements specialism;
+
+public:
+    Elementalist() : Wizard("Aang", 88, 70, 4)
+    {
+        this->specialism = wind;
+    }
+    Elementalist(string name, int knowledge, int skill, int maxMagic, TElements specialism) : Wizard(name, knowledge, skill, maxMagic)
+    {
+        this->specialism = specialism;
+    }
+    string Display()
+    {
+        string parentDisplay = Wizard::Display();
+        string ownDisplay;
+
+        switch (specialism)
+        {
+        case earth:
+            ownDisplay = "\t\tEarth specialist";
+            break;
+        case wind:
+            ownDisplay = "\t\tWind specialist";
+            break;
+        case fire:
+            ownDisplay = "\t\tFire specialist";
+            break;
+        case water:
+            ownDisplay = "\t\tWater specialist";
+            break;
+        default:
+            break;
+        }
+
+        return parentDisplay + ownDisplay;
+    }
+};
+
 void runTests()
 {
     Spell *fireball = new Spell("fireball");
@@ -99,8 +148,10 @@ void runTests()
     Wizard *gandalf = new Wizard("Gandalf Greyhame", 99, 85, 5);
     gandalf->AddMagic(fireball);
     gandalf->AddMagic(frostbolt);
+    Elementalist *aang = new Elementalist("Aang", 88, 70, 4, Elementalist::wind);
 
     expect("Test1", gandalf->Display(), "Gandalf Greyhame, 99, 85, 2\n\tInventory:\n\t\t- Spell Words fireball\n\t\t- Spell Words frostbolt\n");
+    expect("Test2", aang->Display(), "Aang, 88, 70, 0\n\tInventory:\n\t\tWind specialist");
 }
 
 int main()
