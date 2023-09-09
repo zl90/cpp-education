@@ -56,6 +56,33 @@ bool Descending(int nX, int nY)
     return nY <= nX;
 }
 
+class GameObject
+{
+private:
+    int id;
+    int position[3];
+
+public:
+    GameObject(int id, int x, int y, int z)
+    {
+        this->id = id;
+        position[0] = x;
+        position[1] = y;
+        position[2] = z;
+    }
+    string Draw()
+    {
+        return "GameObject " + to_string(id);
+    }
+    int *Move(int x, int y, int z)
+    {
+        position[0] += x;
+        position[1] += y;
+        position[2] += z;
+        return position;
+    }
+};
+
 void runTests()
 {
     string (*helloPtr)() = HelloMessage;
@@ -78,6 +105,11 @@ void runTests()
 
     expect("Test5", Sort(unsorted, 5, Ascending), "1 2 3 5 8 ");
     expect("Test6", Sort(unsorted, 5, Descending), "8 5 3 2 1 ");
+
+    string (GameObject::*drawPtr)() = &GameObject::Draw;
+    GameObject obj(114, 2, 2, 3);
+
+    expect("Test7", (obj.*drawPtr)(), "GameObject 114");
 }
 
 int main()
