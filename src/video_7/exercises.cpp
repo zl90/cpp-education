@@ -95,7 +95,8 @@ public:
 class Elementalist : public Wizard
 {
 public:
-    static enum TElements {
+    enum TElements
+    {
         earth,
         wind,
         fire,
