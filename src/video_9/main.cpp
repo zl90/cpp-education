@@ -19,13 +19,11 @@ public:
 
 float divide(float a, float b)
 {
-
     try
     {
         if (b == 0.0)
         {
             throw("Error. Divided by zero");
-            return -1;
         }
         else
         {
@@ -35,12 +33,10 @@ float divide(float a, float b)
     catch (char *error)
     {
         cout << error << endl;
-        return -1;
     }
     catch (...)
     {
         cout << "Unkown error" << endl;
-        return -1;
     }
 
     return -1;
