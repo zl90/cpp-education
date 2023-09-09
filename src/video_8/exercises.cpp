@@ -140,7 +140,7 @@ void runTests()
     floatArray[4] = 5.5;
 
     expect("Test11", DisplayArray<int>(intArray, 5), "[8, 5, 3, 2, 1]");
-    expect("Test11", DisplayArray<float>(floatArray, 5), "[1.100000, 2.000000, 3.330000, 4.400000, 5.500000]");
+    expect("Test12", DisplayArray<float>(floatArray, 5), "[1.100000, 2.000000, 3.330000, 4.400000, 5.500000]");
 }
 
 int main()
