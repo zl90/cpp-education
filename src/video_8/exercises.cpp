@@ -83,6 +83,19 @@ public:
     }
 };
 
+template <typename T>
+string DisplayArray(T *array, int size)
+{
+    string result = "[";
+
+    for (int i = 0; i < size; i++)
+    {
+        result += to_string(array[i]) + ",";
+    }
+
+    return result + "]";
+}
+
 void runTests()
 {
     string (*helloPtr)() = HelloMessage;
@@ -116,6 +129,17 @@ void runTests()
     expect("Test8", (obj.*movePtr)(1, 1, 1)[0], 3);
     expect("Test9", (obj.*movePtr)(0, 0, 0)[1], 3);
     expect("Test10", (obj.*movePtr)(0, 0, 0)[2], 4);
+
+    int *intArray = unsorted;
+    float *floatArray = new float[5];
+    floatArray[0] = 1.1;
+    floatArray[1] = 2.0;
+    floatArray[2] = 3.33;
+    floatArray[3] = 4.4;
+    floatArray[4] = 5.5;
+
+    expect("Test11", DisplayArray<int>(intArray, 5), "[8,5,3,2,1,]");
+    expect("Test11", DisplayArray<float>(floatArray, 5), "[1.100000,2.000000,3.330000,4.400000,5.500000,]");
 }
 
 int main()
