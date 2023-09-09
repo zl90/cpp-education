@@ -90,10 +90,11 @@ string DisplayArray(T *array, int size)
 
     for (int i = 0; i < size; i++)
     {
-        result += to_string(array[i]) + ",";
+        result += to_string(array[i]);
+        result += i == (size - 1) ? "]" : ", ";
     }
 
-    return result + "]";
+    return result;
 }
 
 void runTests()
@@ -138,8 +139,8 @@ void runTests()
     floatArray[3] = 4.4;
     floatArray[4] = 5.5;
 
-    expect("Test11", DisplayArray<int>(intArray, 5), "[8,5,3,2,1,]");
-    expect("Test11", DisplayArray<float>(floatArray, 5), "[1.100000,2.000000,3.330000,4.400000,5.500000,]");
+    expect("Test11", DisplayArray<int>(intArray, 5), "[8, 5, 3, 2, 1]");
+    expect("Test11", DisplayArray<float>(floatArray, 5), "[1.100000, 2.000000, 3.330000, 4.400000, 5.500000]");
 }
 
 int main()
