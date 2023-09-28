@@ -1,6 +1,8 @@
 #include <array>
 #include <iostream>
 
+// Running this program with Valgrind will demonstrate an `accessing uninitialized memory` error
+
 int main()
 {
     std::array<int, 5> my_array = {42, 3, 39, 4, 9};
