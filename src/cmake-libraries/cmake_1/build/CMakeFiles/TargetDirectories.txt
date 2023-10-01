@@ -1,0 +1,3 @@
+/home/thinkgod/Documents/code/cpp-education/src/cmake-libraries/cmake_1/build/CMakeFiles/threads.dir
+/home/thinkgod/Documents/code/cpp-education/src/cmake-libraries/cmake_1/build/CMakeFiles/edit_cache.dir
+/home/thinkgod/Documents/code/cpp-education/src/cmake-libraries/cmake_1/build/CMakeFiles/rebuild_cache.dir
