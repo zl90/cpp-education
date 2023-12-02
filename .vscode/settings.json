@@ -47,6 +47,10 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "xstring": "cpp",
-        "xlocale": "cpp"
+        "xlocale": "cpp",
+        "chrono": "cpp",
+        "condition_variable": "cpp",
+        "mutex": "cpp",
+        "ratio": "cpp"
     }
 }
