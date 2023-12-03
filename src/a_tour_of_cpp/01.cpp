@@ -22,4 +22,29 @@ int main()
 
     int y = 5;
     consteval int tripleY() { return 3 * y; } // Error, consteval functions are pure, cannot modify non-local variables.
+
+    //////// 1.7 Pointers, arrays, and references /////////
+    int *g = {56, 34, 5, 4, 88};
+    for (auto &x : g)
+    { // You can reference the values directly within a ranged for loop.
+        ++x;
+    }
+
+    int a = 5;
+    int b = 4;
+    int &c = a; // References cannot be made to refer to a different object after being initialized.
+    c = b;      // Watch out! `c` is now actually an alias to `a`, so this is actually putting the value of `b` into `a`.
+
+    int a[4] = {1, 2, 3, 4};
+    int *q = a;
+    q++; // We can see the next element of an array by incrementing the pointer.
+
+    std::cout << *q << '\n';
+    std::cout << *++q << '\n';
+    std::cout << *q++ << '\n';
+
+    if (q) // Compares q to the negation of the nullptr --> equivalent to: if (q != nullptr).
+    {
+        delete q; // Error, deleting of unallocated object (since the new address wasn't allocated by new).
+    }
 }
