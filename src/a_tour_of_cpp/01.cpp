@@ -47,4 +47,7 @@ int main()
     {
         delete q; // Error, deleting of unallocated object (since the new address wasn't allocated by new).
     }
+
+    unsigned int i = 37; // Use unsigned for bit manipulation only.
+    unsigned int i2 = i ^ i;
 }
