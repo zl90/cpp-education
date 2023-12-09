@@ -15,18 +15,27 @@ class Test {
         return new Test();
     }
 
-    int& operator[](int i) { // Overloading array subscript operator
+    int& operator[](int i) {
         return arr[i];
     }
 };
 
+enum class Color {
+    red,
+    blue,
+    yellow
+};
+
 int main () {
     Test * p = Test::initialize();
-    int g = (*p)[2]; // caution: need to dereference the pointer first before using the array subscript operator
+    int g = (*p)[2];
 
     std::cout << "p[2] = " << g << '\n';
 
     delete p;
 
-    return 0;
+    Color r = Color::red;
+
+    std::cout << (int)r << '\n';
+
 }
