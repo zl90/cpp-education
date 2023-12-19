@@ -1,54 +1,66 @@
 #include <iostream>
 
 template <typename T>
-class Vector {
-  T * elements;
+class Vector
+{
+  T *elements;
   int size;
 
-  public:
-  explicit Vector(int a) { // constructor
+public:
+  explicit Vector(int a)
+  { // constructor
     elements = new T[a];
     size = a;
   }
 
-  explicit Vector(int a, T x) { // constructor
+  explicit Vector(int a, T x)
+  { // constructor
     elements = new T[a];
     size = a;
 
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < size; i++)
+    {
       elements[i] = x;
     }
   }
 
-  ~Vector() { // destructor
+  ~Vector()
+  { // destructor
     delete[] elements;
   }
 
-  Vector<T>(const Vector<T>& obj) { // copy constructor
+  Vector<T>(const Vector<T> &obj)
+  { // copy constructor
     size = obj.size;
     elements = new T[size];
 
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < size; i++)
+    {
       elements[i] = obj.elements[i];
     }
   }
 
-  Vector<T>& operator=(const Vector<T>& obj) { // copy assignment operator override
-    if (size > 0) {
+  Vector<T> &operator=(const Vector<T> &obj)
+  { // copy assignment operator override
+    if (size > 0)
+    {
       delete[] elements;
     }
     size = obj.size;
     elements = new T[size];
 
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < size; i++)
+    {
       elements[i] = obj.elements[i];
     }
     std::cout << "Copy assignment operator called!\n";
     return *this;
   }
 
-  Vector<T>(Vector<T>&& obj) { // move constructor
-    if (size > 0) {
+  Vector<T>(Vector<T> &&obj)
+  { // move constructor
+    if (size > 0)
+    {
       delete[] elements;
     }
     size = obj.size;
@@ -58,8 +70,10 @@ class Vector {
     std::cout << "Move constructor called!\n";
   }
 
-  Vector<T>& operator=(Vector<T>&& obj) noexcept { // move assignment operator
-    if (this != &obj) {
+  Vector<T> &operator=(Vector<T> &&obj) noexcept
+  { // move assignment operator
+    if (this != &obj)
+    {
       delete[] elements;
 
       size = obj.size;
@@ -73,44 +87,53 @@ class Vector {
     return *this;
   }
 
-  T& operator[](int i) { // array subscript overload 
+  T &operator[](int i)
+  { // array subscript overload
     return elements[i];
   }
 
-  const T& operator[](int i) const { // array subscript overload 
+  const T &operator[](int i) const
+  { // array subscript overload
     return elements[i];
   }
 
-  void print() {
-    for (int i = 0; i < size; i++) {
+  void print()
+  {
+    for (int i = 0; i < size; i++)
+    {
       std::cout << elements[i] << ", ";
     }
-    
+
     std::cout << '\n';
   }
 
-  int getSize() const { return size; }
+  int get_size() const { return size; }
 };
 
 template <typename T>
-T* begin(Vector<T>& x) { // iterator. This returns a pointer because the elements are allocated on the heap.
-      return &x[0];
+T *begin(Vector<T> &x)
+{ // iterator. This returns a pointer because the elements are allocated on the heap.
+  return &x[0];
 }
 
 template <typename T>
-T* end(Vector<T>& x) { // iterator
-    return &x[0] + x.getSize(); // point to one past the last element of the vector
+T *end(Vector<T> &x)
+{                              // iterator
+  return &x[0] + x.get_size(); // point to one past the last element of the vector
 }
 
 template <typename T>
-Vector<T> operator+(const Vector<T>& a, const Vector<T>& b) { // operator overload
-  if (a.getSize() != b.getSize()) {
+Vector<T> operator+(const Vector<T> &a, const Vector<T> &b)
+{ // operator overload
+  if (a.get_size() != b.get_size())
+  {
     throw "Vector size mismatch";
   }
 
-  Vector<T> result(a.getSize());
+  Vector<T> result(a.get_size());
 
-  for (int i = 0; i < a.getSize(); i++) {
+  for (int i = 0; i < a.get_size(); i++)
+  {
     result[i] = a[i] + b[i];
   }
 
@@ -118,21 +141,39 @@ Vector<T> operator+(const Vector<T>& a, const Vector<T>& b) { // operator overlo
 }
 
 template <typename T>
-Vector<T> operator-(const Vector<T>& a, const Vector<T>& b) {
-  if (a.getSize() != b.getSize()) {
+Vector<T> operator-(const Vector<T> &a, const Vector<T> &b)
+{
+  if (a.get_size() != b.get_size())
+  {
     throw "Vector size mismatch";
   }
 
-  Vector<T> result(a.getSize());
+  Vector<T> result(a.get_size());
 
-  for (int i = 0; i < a.getSize(); i++) {
+  for (int i = 0; i < a.get_size(); i++)
+  {
     result[i] = a[i] - b[i];
   }
 
   return result;
 }
 
-int main () {
+template <typename A, typename Functor>
+auto map(const Vector<A> &v, Functor &&f)
+{
+  using B = std::invoke_result_t<Functor, A>; // Deduce return type at runtime
+  Vector<B> result(v.get_size());
+
+  for (int i = 0; i < v.get_size(); i++)
+  {
+    result[i] = f(v[i]);
+  }
+
+  return result;
+}
+
+int main()
+{
   Vector<double> v(5, 1);
   v.print();
 
@@ -149,7 +190,8 @@ int main () {
 
   Vector<double> v5 = v4 - v4;
 
-  for (auto& x : v4) {
+  for (auto &x : v4) // Use a ranged for loop over a Vector, thanks to the begin() and end() functions.
+  {
     std::cout << x << ". ";
   }
   std::cout << '\n';
@@ -159,6 +201,11 @@ int main () {
   Vector<char> v6(5, 'x');
 
   v6.print();
+
+  Vector<int> v7 = map(v6, [](char a)
+                       { int b = a; return b + 1; }); // Use a lambda as a functor in a higher order function
+
+  v7.print();
 
   return 0;
 }
