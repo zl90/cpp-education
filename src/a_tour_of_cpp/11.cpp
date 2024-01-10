@@ -3,6 +3,7 @@
 #include <string>
 #include <span>
 #include <vector>
+#include <filesystem>
 
 class Test
 {
@@ -66,6 +67,22 @@ int main()
     // Using spans
     std::vector<int> myVector = {1, 2, 3, 4, 5};
     print_subvector(std::span(myVector.begin(), 3));
+
+    // Using the filesystem library
+    std::filesystem::path file_path = "dir/hypothetical.cpp";
+
+    if (std::filesystem::exists(file_path))
+    {
+        std::cout << file_path << " exists!\n";
+    }
+    else
+    {
+        std::cout << file_path << " does NOT exist...\n";
+    }
+
+    std::string extension = file_path.extension();
+
+    std::cout << extension << " is the file extension.\n";
 
     return 0;
 }
