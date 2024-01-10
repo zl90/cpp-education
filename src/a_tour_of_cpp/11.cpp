@@ -1,8 +1,44 @@
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <span>
+#include <vector>
 
 class Test
 {
 };
+
+void test()
+{
+    std::ostringstream oss;
+
+    oss << "{temperature," << std::scientific << 123.456789 << "}";
+    std::cout << oss.str() << '\n';
+}
+
+template <typename Target = std::string, typename Source = std::string>
+Target to(Source arg)
+{
+    std::stringstream buffer;
+    Target result;
+
+    if (!(buffer << arg) || !(buffer >> result) || !(buffer >> std::ws).eof())
+    {
+        throw std::runtime_error("to<>() failed");
+    }
+
+    return result;
+}
+
+void print_subvector(std::span<int> s)
+{
+    for (auto value : s)
+    {
+        std::cout << value << ' ';
+    }
+
+    std::cout << '\n';
+}
 
 int main()
 {
@@ -20,4 +56,16 @@ int main()
 
     std::cout << sizeof(a) << '\n';  // output: 1
     std::cout << sizeof(zi) << '\n'; // output: 1
+
+    // Using stringstreams
+    auto x1 = to<std::string, double>(1.2); // very explicit
+    auto x2 = to<std::string>(1.2);         // Source is deduced to double
+    auto x3 = to<>(1.2);                    // Target is defaulted to string; Source is deduced to double
+    auto x4 = to(1.2);                      // Target is defaulted to stirng; Source is deduced to double
+
+    // Using spans
+    std::vector<int> myVector = {1, 2, 3, 4, 5};
+    print_subvector(std::span(myVector.begin(), 3));
+
+    return 0;
 }
