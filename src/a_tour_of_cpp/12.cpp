@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <stdexcept>
+#include <unordered_map>
 
 struct Entry
 {
@@ -64,6 +65,10 @@ int main()
     {
         std::cout << "Caught the out of bounds error!: " << ex.what() << '\n';
     }
+
+    // Using hash maps:
+    std::unordered_map<std::string, int> phone_book_hashmap = {{"john", 234234}, {"fred", 2345425}, {"tim", 345435}};
+    std::cout << "phone_book_hashmap[\"fred\"]: " << phone_book_hashmap["fred"] << '\n';
 
     return 0;
 }
