@@ -84,5 +84,5 @@ int main()
 
     std::cout << extension << " is the file extension.\n";
 
-    return 0;
+        return 0;
 }
