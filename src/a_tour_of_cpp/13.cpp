@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include <iterator>
+#include <execution>
 
 struct Entry
 {
@@ -12,7 +13,7 @@ struct Entry
 
     friend std::ostream &operator<<(std::ostream &oss, const Entry &entry)
     {
-        oss << entry.name << ",\t" << entry.number;
+        oss << "{\"" << entry.name << ", " << entry.number << "\"}";
         return oss;
     }
 };
@@ -41,8 +42,10 @@ void print_container(const Container &v)
 {
     for (const auto &x : v)
     {
-        std::cout << x << '\n';
+        std::cout << x << ", ";
     }
+
+    std::cout << '\n';
 }
 
 bool has_c(const std::string &s, const char &c)
@@ -59,7 +62,6 @@ int main()
     std::list<Entry> l = copy_vector_to_list(v, l);
 
     print_container(v);
-    std::cout << '\n';
     print_container(l);
 
     std::cout << has_c("asdfg", 'g') << '\n';
@@ -71,6 +73,19 @@ int main()
     *oi = "Hello, "; // Same as cout << "Hello, "
     ++oi;
     *oi = "world!\n"; // Same as cout << "world!\n"
+
+    // Parallel and vectorized execution of algorithms:
+    std::vector<int> vi = {5, 6, 1, 0, -45, 8, 9, 3, 6};
+    std::vector<int> vii = {5, 6, 1, 0, -45, 8, 9, 3, 6};
+    std::vector<int> viii = {5, 6, 1, 0, -45, 8, 9, 3, 6};
+
+    std::sort(std::execution::seq, vi.begin(), vi.end());           // sequential (same as default)
+    std::sort(std::execution::par, vii.begin(), vii.end());         // parallel
+    std::sort(std::execution::par_unseq, viii.begin(), viii.end()); // parallel and/or vectorized
+
+    print_container(vi);
+    print_container(vii);
+    print_container(viii);
 
     return 0;
 }
