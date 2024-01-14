@@ -2,6 +2,8 @@
 #include <vector>
 #include <memory>
 #include <span>
+#include <array>
+#include <bitset>
 
 // unique_ptr
 std::unique_ptr<int> make_int(int i)
@@ -49,6 +51,28 @@ int main()
     auto p2 = std::make_unique<S>(2, "Oz", 7.62);
 
     use(45);
+
+    // Using std::arrays
+    std::array<int, 3> a1 = {1, 2, 3};
+    auto a2 = a1; // std::arrays can be copied.
+    a2[1] = 5;
+    a1 = a2; // std::arrays can be assigned.
+
+    // Using bitsets:
+    std::bitset<9> bs1{"110001111"};
+    std::bitset<9> bs2{0b1'1000'1111};
+
+    std::bitset<9> bs3 = ~bs1;      // complement
+    std::bitset<9> bs4 = bs1 & bs3; // all zeros
+    std::bitset<9> bs5 = bs1 << 2;  // shift left
+
+    std::cout << bs1 << '\n';
+    std::cout << bs2 << '\n';
+    std::cout << bs3 << '\n';
+    std::cout << bs4 << '\n';
+    std::cout << bs5 << '\n';
+    std::cout << bs5.flip() << '\n';
+    std::cout << bs5.flip().count() << '\n';
 
     return 0;
 }
