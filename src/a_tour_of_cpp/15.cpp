@@ -4,6 +4,8 @@
 #include <span>
 #include <array>
 #include <bitset>
+#include <tuple>
+#include <variant>
 
 // unique_ptr
 std::unique_ptr<int> make_int(int i)
@@ -33,6 +35,20 @@ void use(int x)
     // fs(a, 1000);       // Error: span expected
     // fs({a + 10, 100}); // a range error in fs
     // fs({a, x}); // suspect
+}
+
+std::variant<std::string, int> compose_message(std::istream &is)
+{
+    std::string result;
+
+    if (is >> result)
+    {
+        return result;
+    }
+    else
+    {
+        return -1; // error code
+    }
 }
 
 int main()
@@ -73,6 +89,19 @@ int main()
     std::cout << bs5 << '\n';
     std::cout << bs5.flip() << '\n';
     std::cout << bs5.flip().count() << '\n';
+
+    // Using Variants:
+    auto possible_error = compose_message(std::cin);
+
+    if (std::holds_alternative<std::string>(possible_error))
+    {
+        std::cout << std::get<std::string>(possible_error) << '\n';
+    }
+    else
+    {
+        auto error = std::get<int>(possible_error);
+        std::cerr << "Error code: " << error << '\n';
+    }
 
     return 0;
 }
