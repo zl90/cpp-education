@@ -4,6 +4,8 @@
 #include <mutex>
 #include <chrono>
 #include <future>
+#include <numeric>
+#include <ranges>
 
 static int count = 0;
 
@@ -30,6 +32,29 @@ int factorial(int N)
 int square(int x)
 {
     return x * x;
+}
+
+double accum(std::vector<double>::iterator beg, std::vector<double>::iterator end, double init)
+{
+    return std::accumulate(&*beg, &*end, init);
+}
+
+double comp4(std::vector<double> &v)
+{
+    if (v.size() < 10'000)
+    {
+        return accum(v.begin(), v.end(), 0.0);
+    }
+
+    auto v0 = &v[0];
+    auto sz = v.size();
+
+    auto f0 = std::async(accum, v0, v0 + sz / 4, 0.0);
+    auto f1 = std::async(accum, v0 + sz / 4, v0 + sz / 2, 0.0);
+    auto f2 = std::async(accum, v0 + sz / 2, v0 + sz * 3 / 4, 0.0);
+    auto f3 = std::async(accum, v0 + sz * 3 / 4, v0 + sz, 0.0);
+
+    return f0.get() + f1.get() + f2.get() + f3.get();
 }
 
 int main()
@@ -73,6 +98,12 @@ int main()
     int pt_result = pt.get_future().get();
 
     std::cout << "Result of packaged task: " << pt_result << '\n';
+
+    std::vector<double> my_vec(20000, 1.0);
+
+    double d_result = comp4(my_vec);
+
+    std::cout << "Result of comp4: " << d_result << '\n';
 
     return 0;
 }
