@@ -13,5 +13,5 @@ int main() {
 
   int m = atoi(input.c_str());
 
-  std::cout << n % m;
+  cout << n % m;
 }

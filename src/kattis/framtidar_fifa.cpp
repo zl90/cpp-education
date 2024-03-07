@@ -10,5 +10,5 @@ int main() {
   getline(cin, input);
   short k = atoi(input.c_str());
 
-  std::cout << (n / k) + 2022;
+  cout << (n / k) + 2022;
 }
