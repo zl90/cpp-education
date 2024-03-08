@@ -8,7 +8,7 @@ using namespace std;
 int main() {
   string substr = "COV";
   string input;
-  getline(cin, input);
+  cin >> input;
 
   bool contains_substr = false;
 
