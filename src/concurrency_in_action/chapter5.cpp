@@ -1,4 +1,5 @@
 // Learning atomic operations and memory ordering
+#include <assert.h>
 #include <atomic>
 #include <iostream>
 #include <thread>
@@ -26,9 +27,63 @@ void thread2_func() {
   std::cout << "First element is: " << vec[0] << '\n';
 }
 
-int main() {
+void exercise_1() {
+  // Learning how to use atomic bools + learning what the "synchronizes-with"
+  // and "happens-before" relationships are
   std::thread t1(thread1_func);
   std::thread t2(thread2_func);
   t1.join();
   t2.join();
+}
+
+std::atomic<bool> x, y;
+std::atomic<int> z;
+
+void write_x() {
+  std::cout << "Writing to x...\n";
+  x.store(true, std::memory_order_seq_cst);
+}
+void write_y() {
+  std::cout << "Writing to y...\n";
+  y.store(true, std::memory_order_seq_cst);
+}
+
+void read_x_then_y() {
+  while (!x.load(std::memory_order_seq_cst))
+    ;
+  if (y.load(std::memory_order_seq_cst)) {
+    std::cout << "Incrementing z... x is true!\n";
+    z++;
+  }
+}
+
+void read_y_then_x() {
+  while (!y.load(std::memory_order_seq_cst))
+    ;
+  if (x.load(std::memory_order_seq_cst)) {
+    std::cout << "Incrementing z... y is true!\n";
+    z++;
+  }
+}
+
+void exercise_2() {
+  // Learning about std::memory_order_seq_cst
+  x = false;
+  y = false;
+  z = 0;
+  std::thread t1(write_x);
+  std::thread t2(write_y);
+  std::thread t3(read_x_then_y);
+  std::thread t4(read_y_then_x);
+  t1.join();
+  t2.join();
+  t3.join();
+  t4.join();
+
+  assert(z.load(std::memory_order_seq_cst) != 0);
+}
+
+int main() {
+  //   exercise_1();
+  exercise_2();
 }
