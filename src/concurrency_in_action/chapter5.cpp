@@ -21,7 +21,12 @@ void thread1_func() {
 
 void thread2_func() {
   // wait for the data to be put in the vector
-  while (!is_ready_to_read.load(std::memory_order_seq_cst))
+  while (!is_ready_to_read.load(
+      std::memory_order_seq_cst)) // All memory writes before the store in
+                                  // thread1_func will be visible to this
+                                  // thread, and the order of those writes are
+                                  // maintained in a global order for all
+                                  // threads.
     ;
   // read from the vector
   std::cout << "First element is: " << vec[0] << '\n';
@@ -84,11 +89,12 @@ void exercise_2() {
 }
 
 void write_x_then_y() {
-  std::cout << "Writing to x and y (possibly)...\n";
-  x.store(
-      true,
-      std::memory_order_relaxed); // There is no guarantee that this write order
-                                  // will appear the same in other threads!
+  // There is no guarantee that this write order will appear the same in other
+  // threads! There is a very real possibility that another thread could see x
+  // as false and y as true, even though they have a happens-before
+  // relationship in this thread.
+  std::cout << "Writing to x and y...\n";
+  x.store(true, std::memory_order_relaxed);
   y.store(true, std::memory_order_relaxed);
 }
 
@@ -102,7 +108,9 @@ void read_y_then_x_2() {
 }
 
 void exercise_3() {
-  // Learning about std::memory_order_relaxed
+  // Learning about std::memory_order_relaxed.
+  // std::memory_order_relaxed doesn't participate in synchronizes-with
+  // relationships.
   x = false;
   y = false;
   z = 0;
@@ -117,7 +125,5 @@ void exercise_3() {
 int main() {
   // exercise_1();
   // exercise_2();
-  for (int i = 0; i < 10000; i++) {
-    exercise_3();
-  }
+  exercise_3();
 }
