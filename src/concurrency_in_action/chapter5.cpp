@@ -122,8 +122,45 @@ void exercise_3() {
   assert(z.load() != 0);
 }
 
+void write_x_then_y_4() {
+  std::cout << "Writing to x and y...!\n";
+  x.store(true, std::memory_order_relaxed);
+  y.store(true, std::memory_order_release);
+}
+
+void read_y_then_x_4() {
+  while (!y.load(
+      std::memory_order_acquire)) // All memory writes before the y.store in the
+                                  // write_x_then_y_4 thread will become visible
+                                  // to this thread (aka: the y store
+                                  // synchronizes with the y load). The order of
+                                  // the writes are not stored globally though,
+                                  // and other threads could see x as false and
+                                  // y as true.
+    ;
+  if (x.load(std::memory_order_relaxed))
+    std::cout << "Incrementing z... x is true!\n";
+  ++z;
+}
+
+void exercise_4() {
+  // Learning about std::memory_order_release and std::memory_order_acquire.
+  // Now there IS a synchronizes-with relationship for stores within the same
+  // thread.
+  x = false;
+  y = false;
+  z = 0;
+  std::thread t3(write_x_then_y_4);
+  std::thread t4(read_y_then_x_4);
+  t3.join();
+  t4.join();
+
+  assert(z.load() != 0);
+}
+
 int main() {
   // exercise_1();
   // exercise_2();
-  exercise_3();
+  // exercise_3();
+  exercise_4();
 }
