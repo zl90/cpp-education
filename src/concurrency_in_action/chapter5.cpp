@@ -83,7 +83,41 @@ void exercise_2() {
   assert(z.load(std::memory_order_seq_cst) != 0);
 }
 
+void write_x_then_y() {
+  std::cout << "Writing to x and y (possibly)...\n";
+  x.store(
+      true,
+      std::memory_order_relaxed); // There is no guarantee that this write order
+                                  // will appear the same in other threads!
+  y.store(true, std::memory_order_relaxed);
+}
+
+void read_y_then_x_2() {
+  while (!y.load(std::memory_order_relaxed))
+    ;
+  if (x.load(std::memory_order_relaxed)) {
+    std::cout << "Incrementing z... y is true!\n";
+    z++;
+  }
+}
+
+void exercise_3() {
+  // Learning about std::memory_order_relaxed
+  x = false;
+  y = false;
+  z = 0;
+  std::thread t3(write_x_then_y);
+  std::thread t4(read_y_then_x_2);
+  t3.join();
+  t4.join();
+
+  assert(z.load() != 0);
+}
+
 int main() {
-  //   exercise_1();
-  exercise_2();
+  // exercise_1();
+  // exercise_2();
+  for (int i = 0; i < 10000; i++) {
+    exercise_3();
+  }
 }
