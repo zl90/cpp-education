@@ -32,13 +32,11 @@ template <typename T>
 bool CircularQueue<T>::Pop() {
   std::unique_lock<std::mutex> lock(mut_);
 
-  if (is_finished()) {
-    return false;
-  }
-
   while (is_empty()) {
+    if (is_finished()) {
+      return false;
+    }
     cond_.wait(lock);
-    if (is_finished()) return false;
   }
 
   std::cout << "Consumed \"" << elements_[pop_cursor_].value() << "\"\n";
@@ -165,7 +163,7 @@ int main() {
   // Simulates an erratic producer
   auto push_thread = [&]() {
     for (int i = 0; i < 100; i++) {
-      for (int j = 0; j < (rand() % 5) + 1; j++) {
+      for (int j = 0; j < (rand() % 15) + 1; j++) {
         q.Push(i);
       }
       std::this_thread::sleep_for(std::chrono::nanoseconds((rand() % 5) + 1));
