@@ -17,8 +17,10 @@ class CircularQueue {
   bool Pop();
   const T &Front();
   size_t Size();
-  bool Empty();
-  bool Full();
+  bool IsEmpty();
+  bool IsFull();
+  bool IsFinished();
+  void Close();
   void Print();
 
  private:
@@ -26,6 +28,16 @@ class CircularQueue {
   size_t capacity_;
   int push_cursor_;
   int pop_cursor_;
+  long long elements_popped_;
+  long long elements_pushed_;
+  bool is_closed_;
+
+  const T &front();
+  size_t size();
+  bool is_empty();
+  bool is_full();
+  bool is_finished();
+  void close();
 
   std::mutex mut_;
   std::condition_variable cond_;
