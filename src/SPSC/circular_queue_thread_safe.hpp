@@ -16,7 +16,7 @@
  * using a circular buffer.
  *
  * This queue supports concurrent access from one producer thread and one
- * consumer thread. Pushing to a full queue will result in data loss.
+ * consumer thread.
  */
 template <typename T>
 class CircularQueue {
@@ -165,3 +165,5 @@ class CircularQueue {
   std::mutex mut_;
   std::condition_variable cond_;
 };
+
+#include "circular_queue_thread_safe.cpp"

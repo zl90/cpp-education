@@ -14,8 +14,12 @@ template <typename T>
 bool CircularQueue<T>::Push(const T &element) {
   std::unique_lock<std::mutex> lock(mut_);
 
-  if (is_full() || is_closed_) {
+  if (is_closed_) {
     return false;
+  }
+
+  while (is_full()) {
+    cond_.wait(lock);
   }
 
   std::cout << "Pushed \"" << element << "\"\n";
@@ -43,6 +47,9 @@ bool CircularQueue<T>::Pop() {
   elements_[pop_cursor_] = std::nullopt;
   pop_cursor_ = (pop_cursor_ + 1) % capacity_;
   elements_popped_++;
+  lock.unlock();
+  cond_.notify_all();
+
   return true;
 }
 
@@ -56,7 +63,7 @@ template <typename T>
 const T &CircularQueue<T>::front() {
   std::unique_lock<std::mutex> lock(mut_);
 
-  if (!elements_[pop_cursor_].has_value()) {
+  if (is_empty()) {
     throw std::runtime_error("No elements in queue");
   }
 
@@ -153,35 +160,4 @@ void CircularQueue<T>::Print() {
 
   std::cout << "Elements pushed: " << elements_pushed_
             << ", Elements popped: " << elements_popped_ << "\n";
-}
-
-int main() {
-  srand(time(NULL));
-
-  CircularQueue<int> q(10);
-
-  // Simulates an erratic producer
-  auto push_thread = [&]() {
-    for (int i = 0; i < 100; i++) {
-      for (int j = 0; j < (rand() % 15) + 1; j++) {
-        q.Push(i);
-      }
-      std::this_thread::sleep_for(std::chrono::nanoseconds((rand() % 5) + 1));
-    }
-    q.Close();
-  };
-
-  // Consumes until the producer signals end of input
-  auto pop_thread = [&]() {
-    while (!q.IsFinished()) {
-      q.Pop();
-    }
-  };
-
-  std::thread t1(push_thread);
-  std::thread t2(pop_thread);
-  t1.join();
-  t2.join();
-
-  q.Print();
 }
