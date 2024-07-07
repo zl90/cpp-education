@@ -13,8 +13,6 @@ int main() {
       q.Push(i);
     }
     q.Close();
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(1ms);
 
     auto end = std::chrono::high_resolution_clock::now();
     auto duration =
@@ -31,6 +29,9 @@ int main() {
     while (!q.IsFinished()) {
       q.Pop();
     }
+
+    using namespace std::chrono_literals;
+    std::this_thread::sleep_for(1ms);
 
     auto end = std::chrono::high_resolution_clock::now();
     auto duration =
