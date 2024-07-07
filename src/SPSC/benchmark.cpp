@@ -13,15 +13,6 @@ int main() {
       q.Push(i);
     }
     q.Close();
-
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration =
-        std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    auto duration_seconds = duration.count() / 1'000'000.0;
-
-    std::cout << "Time to push " << num_elements
-              << " elements: " << duration.count() << " microseconds. ("
-              << num_elements / duration_seconds << " ops/second)\n";
   };
 
   // Consumes until the producer signals end of input
@@ -29,24 +20,21 @@ int main() {
     while (!q.IsFinished()) {
       q.Pop();
     }
-
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(1ms);
-
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration =
-        std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    auto duration_seconds = duration.count() / 1'000'000.0;
-
-    std::cout << "Time to pop " << num_elements
-              << " elements: " << duration.count() << " microseconds. ("
-              << num_elements / duration_seconds << " ops/second)\n";
   };
 
   std::thread t1(push_thread);
   std::thread t2(pop_thread);
   t1.join();
   t2.join();
+
+  auto end = std::chrono::high_resolution_clock::now();
+  auto duration =
+      std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  auto duration_seconds = duration.count() / 1'000'000.0;
+
+  std::cout << "Time to push & pop " << num_elements
+            << " elements: " << duration.count() << " microseconds. ("
+            << num_elements / duration_seconds << " ops/second)\n";
 
   q.Print();
 }
