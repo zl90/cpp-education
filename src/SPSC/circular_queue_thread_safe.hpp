@@ -31,11 +31,11 @@ class CircularQueue {
   /**
    * @brief Pushes an element into the queue.
    *
-   * If the queue is full, the element is discarded.
+   * If the queue is full, the queue will wait for an element to be popped.
    *
    * @param element The element to push into the queue.
    * @return true if the element was successfully pushed; false if the queue is
-   * full.
+   * finished.
    */
   bool Push(const T &element);
 

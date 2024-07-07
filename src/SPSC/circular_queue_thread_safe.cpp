@@ -22,7 +22,6 @@ bool CircularQueue<T>::Push(const T &element) {
     cond_.wait(lock);
   }
 
-  std::cout << "Pushed \"" << element << "\"\n";
   elements_[push_cursor_] = std::move(element);
   push_cursor_ = (push_cursor_ + 1) % capacity_;
   elements_pushed_++;
@@ -43,7 +42,6 @@ bool CircularQueue<T>::Pop() {
     cond_.wait(lock);
   }
 
-  std::cout << "Consumed \"" << elements_[pop_cursor_].value() << "\"\n";
   elements_[pop_cursor_] = std::nullopt;
   pop_cursor_ = (pop_cursor_ + 1) % capacity_;
   elements_popped_++;
