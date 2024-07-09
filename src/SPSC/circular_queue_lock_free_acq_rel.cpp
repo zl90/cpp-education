@@ -31,7 +31,7 @@ bool CircularQueueLockFreeAcqRel<T>::Push(const T &element) {
   new (&elements_[push_cursor % capacity_])
       T(element); // Allocate using placement new
   push_cursor_.store(push_cursor + 1, std::memory_order_release);
-  elements_pushed_.fetch_add(std::memory_order_acq_rel);
+  elements_pushed_.fetch_add(1, std::memory_order_acq_rel);
 
   return true;
 }
@@ -47,7 +47,7 @@ template <typename T> bool CircularQueueLockFreeAcqRel<T>::Pop() {
 
   elements_[pop_cursor % capacity_].~T(); // Deallocate using placement new
   pop_cursor_.store(pop_cursor + 1, std::memory_order_release);
-  elements_popped_.fetch_add(std::memory_order_acq_rel);
+  elements_popped_.fetch_add(1, std::memory_order_acq_rel);
 
   return true;
 }
