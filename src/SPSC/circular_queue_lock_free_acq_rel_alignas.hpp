@@ -23,16 +23,16 @@
  * All memory allocation is done during initialisation. A preallocated buffer is
  * re-used to store elements at runtime.
  */
-template <typename T> class CircularQueueLockFreeAcqRel {
+template <typename T> class CircularQueueLockFreeAcqRelAlignas {
 public:
   /**
    * @brief Constructs a circular queue with the specified capacity.
    *
    * @param capacity The maximum number of elements the queue can hold.
    */
-  CircularQueueLockFreeAcqRel(size_t capacity);
+  CircularQueueLockFreeAcqRelAlignas(size_t capacity);
 
-  ~CircularQueueLockFreeAcqRel();
+  ~CircularQueueLockFreeAcqRelAlignas();
 
   /**
    * @brief Pushes an element into the queue.
@@ -109,11 +109,11 @@ public:
 private:
   size_t capacity_;
   T *elements_;
-  std::atomic<long long> push_cursor_;
-  std::atomic<long long> pop_cursor_;
-  std::atomic<long long> elements_popped_;
-  std::atomic<long long> elements_pushed_;
-  std::atomic<bool> is_closed_;
+  alignas(64) std::atomic<long long> push_cursor_;
+  alignas(64) std::atomic<long long> pop_cursor_;
+  alignas(64) std::atomic<long long> elements_popped_;
+  alignas(64) std::atomic<long long> elements_pushed_;
+  alignas(64) std::atomic<bool> is_closed_;
 
   /**
    * @brief Retrieves the front element of the queue without popping it.
@@ -171,4 +171,4 @@ private:
   std::allocator<T> allocator_;
 };
 
-#include "circular_queue_lock_free_acq_rel.cpp"
+#include "circular_queue_lock_free_acq_rel_alignas.cpp"
