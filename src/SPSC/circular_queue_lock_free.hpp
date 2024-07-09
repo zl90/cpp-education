@@ -22,16 +22,16 @@
  * All memory allocation is done during initialisation. A preallocated buffer is
  * re-used to store elements at runtime.
  */
-template <typename T> class CircularQueuePreAlloc {
+template <typename T> class CircularQueueLockFree {
 public:
   /**
    * @brief Constructs a circular queue with the specified capacity.
    *
    * @param capacity The maximum number of elements the queue can hold.
    */
-  CircularQueuePreAlloc(size_t capacity);
+  CircularQueueLockFree(size_t capacity);
 
-  ~CircularQueuePreAlloc();
+  ~CircularQueueLockFree();
 
   /**
    * @brief Pushes an element into the queue.
