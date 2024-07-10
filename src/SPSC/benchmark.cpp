@@ -1,5 +1,6 @@
 #include "circular_queue_lock_free.hpp"
 #include "circular_queue_lock_free_acq_rel.hpp"
+#include "circular_queue_lock_free_acq_rel_alignas.hpp"
 #include "circular_queue_thread_safe.hpp"
 #include "circular_queue_thread_safe_prealloc.hpp"
 
@@ -147,4 +148,41 @@ int main() {
             << " ops/second)\n";
 
   lock_free_circular_queue_acq_rel.Print();
+
+  CircularQueueLockFreeAcqRelAlignas<int>
+      lock_free_circular_queue_acq_rel_alignas(10);
+
+  start = std::chrono::high_resolution_clock::now();
+
+  auto push_thread_lock_free_acq_rel_alignas = [&]() {
+    for (int i = 0; i < num_elements; i++) {
+      lock_free_circular_queue_acq_rel_alignas.Push(i);
+    }
+    lock_free_circular_queue_acq_rel_alignas.Close();
+  };
+
+  // Consumes until the producer signals end of input
+  auto pop_thread_lock_free_acq_rel_alignas = [&]() {
+    while (!lock_free_circular_queue_acq_rel_alignas.IsFinished()) {
+      lock_free_circular_queue_acq_rel_alignas.Pop();
+    }
+  };
+
+  std::thread t9(push_thread_lock_free_acq_rel_alignas);
+  std::thread t10(pop_thread_lock_free_acq_rel_alignas);
+  t9.join();
+  t10.join();
+
+  end = std::chrono::high_resolution_clock::now();
+  duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  duration_seconds = duration.count() / 1'000'000.0;
+
+  std::cout << "**** Thread safe circular queue (lock free - release acquire "
+               "memory ordering - alignas) "
+               "****\nTime to push & pop "
+            << num_elements << " elements: " << duration.count()
+            << " microseconds. (" << num_elements / duration_seconds
+            << " ops/second)\n";
+
+  lock_free_circular_queue_acq_rel_alignas.Print();
 }
