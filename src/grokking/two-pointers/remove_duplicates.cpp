@@ -4,6 +4,15 @@ using namespace std;
 #include <vector>
 
 /*
+    - Clarifying questions:
+        - To be clear, I DONT need to modify the array explicitly? I can just
+   keep track of the theoretical length of a modified array? -> The answer to
+   this completely changes the solution.
+        - Can there be no duplicates?
+        - Can there be ONLY duplicates?
+        - Can there be only one element? Zero elements?
+        - Is the array sorted in ascending order or descending order? I don't
+   think this matters.
     - Naive solution O(n^2): maintain duplicate array arr2. For every element in
    arr, push it to arr2 only if it doesn't exist in arr2. This will require
    checking every element of arr2 for every element of arr.
