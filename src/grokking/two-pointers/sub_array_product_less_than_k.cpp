@@ -11,30 +11,19 @@ class SubarrayProductLessThanK {
 
     vector<vector<int>> result;
     deque<int> q;
-    int a = 0, b = 0, product = 1, prev_b = -1;
+    int a = 0, b = 0, product = 1;
 
-    while (a < arr.size()) {
-      if (b != prev_b) {
-        product = product * arr[b];
-        q.push_back(arr[b]);
-        if (arr[b] < target) {
-          result.push_back({arr[b]});
-        }
+    for (int b = 0; b < arr.size(); b++) {
+      product *= arr[b];
+      q.push_back(arr[b]);
+      while (product >= target) {
+        q.pop_front();
+        product /= arr[a];
+        a++;
       }
-      if (b != a) {
-        // cout << "product: " << product << ", target: " << target << "\n";
-        if (product < target) {
-          result.push_back(to_array(q));
-          prev_b = b;
-          b++;
-        } else {
-          product = product / arr[a];
-          std::cout << "Popping " << q.front() << "\n";
-          q.pop_front();
-          a++;
-        }
-      } else {
-        b++;
+      result.push_back(to_array(q));
+      if (q.size() > 1) {
+        result.push_back({arr[b]});
       }
     }
 
