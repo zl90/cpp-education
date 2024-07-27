@@ -5,7 +5,7 @@
 using namespace std;
 
 class Interval {
-public:
+ public:
   int start = 0;
   int end = 0;
 
@@ -16,7 +16,7 @@ public:
 };
 
 class MergeIntervals {
-public:
+ public:
   static vector<Interval> merge(vector<Interval> &intervals) {
     if (intervals.size() <= 1) {
       return intervals;
@@ -28,7 +28,7 @@ public:
 
     vector<Interval> mergedIntervals;
     int start = intervals[0].start,
-        end = intervals[0].end; // keep track of a running interval
+        end = max(end, intervals[0].end);  // keep track of a running interval
     for (const auto &interval : intervals) {
       if (interval.start <= end) {
         // merge intervals
