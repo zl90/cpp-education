@@ -24,31 +24,25 @@ class InsertInterval {
 
     vector<Interval> mergedIntervals, insertedIntervals;
 
-    // insertion
-    bool isInserted = false;
+    bool hasMerged = false;
     for (const auto &interval : intervals) {
-      if (!isInserted && newInterval.start <= interval.start) {
-        insertedIntervals.push_back(newInterval);
-        isInserted = true;
-      }
-      insertedIntervals.push_back(interval);
-    }
-
-    // merge intervals
-    int start = insertedIntervals[0].start, end = insertedIntervals[0].end;
-    for (const auto &interval : insertedIntervals) {
-      if (interval.start <= end) {
-        // merge
-        end = max(end, interval.end);
+      if (newInterval.start < interval.end &&
+          newInterval.end > interval.start) {
+        newInterval.start = min(interval.start, newInterval.start);
+        newInterval.end = max(interval.end, newInterval.end);
+        hasMerged = true;
       } else {
-        // start new interval
-        mergedIntervals.push_back({start, end});
-        start = interval.start;
-        end = interval.end;
+        if (hasMerged) {
+          mergedIntervals.push_back(newInterval);
+          hasMerged = false;
+        }
+        mergedIntervals.push_back(interval);
       }
     }
 
-    mergedIntervals.push_back({start, end});
+    if (hasMerged) {
+      mergedIntervals.push_back(newInterval);
+    }
 
     return mergedIntervals;
   }
