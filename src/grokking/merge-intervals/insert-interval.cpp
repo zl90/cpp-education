@@ -22,7 +22,7 @@ class InsertInterval {
       return {newInterval};
     }
 
-    vector<Interval> mergedIntervals, insertedIntervals;
+    vector<Interval> mergedIntervals;
 
     bool hasMerged = false;
     for (const auto &interval : intervals) {
