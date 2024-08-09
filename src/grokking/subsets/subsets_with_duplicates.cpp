@@ -11,16 +11,24 @@ class SubsetWithDuplicates {
   static vector<vector<int>> findSubsets(vector<int> &nums) {
     vector<vector<int>> subsets;
     subsets.push_back({});
-    if (nums.size() == 0) return subsets;
-    unordered_map<int, int> frequencies;
-    for (int i = 0; i < nums.size(); i++) {
-      frequencies[nums[i]]++;
+    int start = 0, end = 0;
+    for (int a = 0; a < nums.size(); a++) {
       vector<vector<int>> temp = subsets;
-      for (int j = getDuplicateCount(frequencies[nums[i]]); j < temp.size();
-           j++) {
-        temp[j].push_back(nums[i]);
-        subsets.push_back(temp[j]);
+      if (a > 0 && nums[a] == nums[a - 1]) {
+        // only push to new elements from previous iteration
+        for (int i = start; i < end; i++) {
+          temp[i].push_back(nums[a]);
+          subsets.push_back(temp[i]);
+        }
+      } else {
+        // push to all elements
+        for (int i = 0; i < temp.size(); i++) {
+          temp[i].push_back(nums[a]);
+          subsets.push_back(temp[i]);
+        }
       }
+      start = end;
+      end = subsets.size();
     }
     return subsets;
   }
