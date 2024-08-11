@@ -7,23 +7,23 @@ using namespace std;
 class Permutations {
  public:
   static vector<vector<int>> findPermutations(const vector<int> &nums) {
+    if (nums.size() == 0) return {};
     vector<vector<int>> result;
     queue<vector<int>> q;
     q.push({});
-    for (const auto &num : nums) {
-      int n = q.size();
-      vector<vector<int>> newSubPermutations;
-      for (int i = 0; i < n; i++) {
+    for (int a = 0; a < nums.size(); a++) {
+      int levelSize = q.size();
+      for (int i = 0; i < levelSize; i++) {
         vector<int> curr = q.front();
         q.pop();
-        insertInAllPlaces(num, newSubPermutations, curr);
-      }
-
-      for (const auto &subPermutation : newSubPermutations) {
-        if (subPermutation.size() == nums.size()) {
-          result.push_back(subPermutation);
-        } else {
-          q.push(subPermutation);
+        vector<vector<int>> newSubPermutations =
+            insertIntoAllPlaces(nums[a], curr);
+        for (const auto &subPermutation : newSubPermutations) {
+          if (a == nums.size() - 1) {
+            result.push_back(subPermutation);
+          } else {
+            q.push(subPermutation);
+          }
         }
       }
     }
@@ -31,13 +31,14 @@ class Permutations {
   }
 
  private:
-  static void insertInAllPlaces(int num, vector<vector<int>> &results,
-                                vector<int> curr) {
+  static vector<vector<int>> insertIntoAllPlaces(int num, vector<int> curr) {
+    vector<vector<int>> permutations;
     for (int i = 0; i < curr.size() + 1; i++) {
       vector<int> output = curr;
       output.insert(output.begin() + i, num);
-      results.push_back(output);
+      permutations.push_back(output);
     }
+    return permutations;
   }
 };
 
