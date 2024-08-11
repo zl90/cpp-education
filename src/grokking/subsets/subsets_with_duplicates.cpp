@@ -9,20 +9,22 @@ using namespace std;
 class SubsetWithDuplicates {
  public:
   static vector<vector<int>> findSubsets(vector<int> &nums) {
+    if (nums.size() == 0) {
+      return {};
+    }
     vector<vector<int>> subsets;
+    sort(nums.begin(), nums.end());
     subsets.push_back({});
-    int start = 0, end = 0;
+    int start = 0, end = subsets.size();
     for (int a = 0; a < nums.size(); a++) {
       vector<vector<int>> temp = subsets;
-      if (a > 0 && nums[a] == nums[a - 1]) {
-        // only push to new elements from previous iteration
+      if (a > 0 && nums[a - 1] == nums[a]) {
         for (int i = start; i < end; i++) {
           temp[i].push_back(nums[a]);
           subsets.push_back(temp[i]);
         }
       } else {
-        // push to all elements
-        for (int i = 0; i < temp.size(); i++) {
+        for (int i = 0; i < end; i++) {
           temp[i].push_back(nums[a]);
           subsets.push_back(temp[i]);
         }
