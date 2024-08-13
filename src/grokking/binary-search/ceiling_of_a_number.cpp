@@ -6,29 +6,19 @@ using namespace std;
 class CeilingOfANumber {
  public:
   static int searchCeilingOfANumber(const vector<int>& arr, int key) {
-    if (arr.empty()) return -1;
+    if (arr[arr.size() - 1] > key) return -1;
     int start = 0, end = arr.size() - 1;
-    while (true) {
+    while (start <= end) {
       int i = (start + end) / 2;
-      if (arr[i] == key) return i;
-      if (start == end) {
-        // linear search mode
-        while (i < arr.size()) {
-          if (arr[i] >= key) {
-            return i;
-          }
-          i++;
-        }
-        return -1;
+      if (arr[i] == key) {
+        return i;
+      } else if (arr[i] > key) {
+        end = i - 1;
       } else {
-        // binary search mode
-        if (arr[i] > key) {
-          end = i - 1;
-        } else {
-          start = i + 1;
-        }
+        start = i + 1;
       }
     }
+    return start;
   }
 };
 
