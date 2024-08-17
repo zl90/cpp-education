@@ -14,7 +14,8 @@ class KLargestNumbers {
     for (const auto& element : nums) {
       heap.push(element);
     }
-    for (int i = 0; i < min(k, (int)heap.size()); i++) {
+    int heapSize = heap.size();
+    for (int i = 0; i < min(k, heapSize); i++) {
       results.push_back(heap.top());
       heap.pop();
     }
