@@ -9,15 +9,22 @@ class KLargestNumbers {
  public:
   static vector<int> findKLargestNumbers(const vector<int>& nums, int k) {
     if (nums.empty()) return {};
+    if (k >= nums.size()) return nums;
     vector<int> results;
-    priority_queue<int> heap;
-    for (const auto& element : nums) {
-      heap.push(element);
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+    for (int i = 0; i < nums.size(); i++) {
+      if (i < k) {
+        minHeap.push(nums[i]);
+      } else {
+        if (nums[i] > minHeap.top()) {
+          minHeap.pop();
+          minHeap.push(nums[i]);
+        }
+      }
     }
-    int heapSize = heap.size();
-    for (int i = 0; i < min(k, heapSize); i++) {
-      results.push_back(heap.top());
-      heap.pop();
+    for (int i = 0; i < k; i++) {
+      results.push_back(minHeap.top());
+      minHeap.pop();
     }
     return results;
   }
