@@ -26,17 +26,14 @@ class MergeKSortedLists {
       }
     }
     resultHead = minHeap.top();
-    ListNode *currNode = minHeap.top();
-    minHeap.pop();
-    if (currNode->next) {
-      minHeap.push(currNode->next);
-    }
     while (!minHeap.empty()) {
-      currNode->next = minHeap.top();
-      currNode = minHeap.top();
+      ListNode *currNode = minHeap.top();
       minHeap.pop();
       if (currNode->next) {
         minHeap.push(currNode->next);
+      }
+      if (!minHeap.empty()) {
+        currNode->next = minHeap.top();
       }
     }
     return resultHead;
