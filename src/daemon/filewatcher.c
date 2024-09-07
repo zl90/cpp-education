@@ -1,4 +1,5 @@
 // Runs a daemon that notifies the desktop user if the specified file changes.
+#include <libgen.h>
 #include <libnotify/notify.h>
 #include <signal.h>
 #include <stdbool.h>
@@ -16,6 +17,7 @@
 #define EXIT_ERR_BASE_PATH_NULL 4
 #define EXIT_ERR_READ_INOTIFY_BUFFER 5
 #define EXIT_ERR_NOTIFY_INIT 6
+#define EXIT_ERR_FULL_PATH_NULL 7
 
 int IeventQueue = -1;
 int IeventStatus = -1;
@@ -39,8 +41,8 @@ void signal_handler(int signal) {
 int main(int argc, char** argv) {
   bool libnotifyInitStatus = false;
 
+  char* fullPath = NULL;
   char* basePath = NULL;
-  char* token = NULL;
   char* notificationMessage = NULL;
 
   NotifyNotification* notifyHandle;
@@ -58,14 +60,14 @@ int main(int argc, char** argv) {
     exit(EXIT_ERR_TOO_FEW_ARGS);
   }
 
-  basePath = (char*)malloc(sizeof(char) * (strlen(argv[1]) + 1));
-  strcpy(basePath, argv[1]);
+  fullPath = strdup(argv[1]);
 
-  token = strtok(basePath, "/");
-  while (token != NULL) {
-    basePath = token;
-    token = strtok(NULL, "/");
+  if (fullPath == NULL) {
+    fprintf(stderr, "Error getting full path.\n");
+    exit(EXIT_ERR_FULL_PATH_NULL);
   }
+
+  basePath = basename(fullPath);
 
   if (basePath == NULL) {
     fprintf(stderr, "Error getting base path.\n");
