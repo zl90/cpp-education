@@ -15,8 +15,8 @@ class GenerateParentheses {
   }
 
  private:
-  static void dfs(string str, int openCount, int closedCount,
-                  vector<string>& output, int N) {
+  static void dfs(string str, const int& openCount, const int& closedCount,
+                  vector<string>& output, const int& N) {
     if (openCount < closedCount || openCount > N || closedCount > N) return;
     if (str.size() == N * 2) {
       output.push_back(str);
