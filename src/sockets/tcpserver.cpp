@@ -100,7 +100,7 @@ int main(int argc, char **argv) {
     }
 
     // Send the response.
-    snprintf((char *)buff, sizeof(buff), "HTTP/1.0 200 OK\r\n\r\nHello");
+    snprintf((char *)buff, sizeof(buff), "HTTP/1.0 200 OK\r\n\r\nHello\n");
     while (true) {
       int bytessent = write(connfd, (char *)buff, strlen((char *)buff));
       if (bytessent < 0) {
