@@ -47,12 +47,10 @@ int main(int argc, char** argv) {
       exit(EXIT_ERR_SYNC_FAILED);
     }
   } else {
-    printf("WAITING FOR CHILD.\n");
-    if (waitpid(childPid, &wstatus, 0) == -1) {
+    if (wait(NULL) == -1) {
       fprintf(stderr, "wait error.\n");
       exit(EXIT_ERR_WAIT_FAILED);
     }
-    printf("DONE WAITING\n");
   }
   if (isChildProcess) {
     printf("Reading from child process. `a`: %i (not shared)\n", a);
