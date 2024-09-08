@@ -60,7 +60,6 @@ int main(int argc, char** argv) {
         "Reading from child process. `b`: %i (shared between parent process "
         "and child process)\n",
         *b);
-    exit(EXIT_SUCCESS);
   } else {
     printf("Reading from parent process. `a`: %i (not shared)\n", a);
     printf(
