@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,7 +18,6 @@ int a = 5;
 
 int main(int argc, char** argv) {
   pid_t childPid = fork();
-  int wstatus;
 
   if (childPid == -1) {
     fprintf(stderr, "fork error.\n");
