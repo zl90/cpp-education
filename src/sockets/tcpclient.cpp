@@ -13,8 +13,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#define SERVER_PORT 80
-
 #define MAXLINE 4096  // Buffer for reading.
 
 #define EXIT_ERR_INSUFFICIENT_ARGS 1
@@ -28,11 +26,14 @@ int main(int argc, char** argv) {
   int sockfd, bytesread, sendbytes;
   struct sockaddr_in servaddr;
   char sendline[MAXLINE], recvline[MAXLINE];
+  int port = 80;
 
-  if (argc != 2) {
-    fprintf(stderr, "usage: %s <server address>\n", argv[0]);
+  if (argc != 3) {
+    fprintf(stderr, "usage: %s <server address> <port>\n", argv[0]);
     exit(EXIT_ERR_INSUFFICIENT_ARGS);
   }
+
+  port = atoi(argv[2]);
 
   if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     fprintf(stderr, "socket initialisation failed.\n");
@@ -41,7 +42,7 @@ int main(int argc, char** argv) {
 
   memset(&servaddr, 0, sizeof(servaddr));  // Zero out the server struct.
   servaddr.sin_family = AF_INET;
-  servaddr.sin_port = htons(SERVER_PORT);
+  servaddr.sin_port = htons(port);
 
   // Translates string representation of an IPv4 address into a binary network
   // representation.
