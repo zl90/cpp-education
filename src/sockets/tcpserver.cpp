@@ -13,6 +13,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <string>
+
 #define MAXLINE 4096
 #define SERVER_PORT 18000
 
@@ -48,7 +50,6 @@ char *bin2hex(const unsigned char *input, size_t len) {
 int main(int argc, char **argv) {
   int listenfd, connfd, bytesread;
   struct sockaddr_in servaddr;
-  uint8_t buff[MAXLINE + 1];
   uint8_t recvline[MAXLINE + 1];
 
   if ((listenfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
@@ -100,14 +101,14 @@ int main(int argc, char **argv) {
     }
 
     // Send the response.
-    snprintf((char *)buff, sizeof(buff), "HTTP/1.0 200 OK\r\n\r\nHello\n");
+    const std::string response = "HTTP/1.0 200 OK\r\n\r\nHello\n";
     while (true) {
-      int bytessent = write(connfd, (char *)buff, strlen((char *)buff));
+      int bytessent = write(connfd, response.c_str(), response.length());
       if (bytessent < 0) {
         fprintf(stderr, "socket write failed.\n");
         exit(EXIT_ERR_SOCK_WRITE);
       }
-      if (bytessent == strlen((char *)buff)) break;
+      if (bytessent == response.length()) break;
     }
 
     if (close(connfd) < 0) {
