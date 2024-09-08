@@ -17,15 +17,6 @@
 int a = 5;
 
 int main(int argc, char** argv) {
-  pid_t childPid = fork();
-
-  if (childPid == -1) {
-    fprintf(stderr, "fork error.\n");
-    exit(EXIT_ERR_FORK_FAILED);
-  }
-
-  bool isChildProcess = childPid == 0;
-
   uint8_t* b = (uint8_t*)(mmap(NULL, PAGESIZE, PROT_READ | PROT_WRITE,
                                MAP_SHARED | MAP_ANONYMOUS, -1, 0));
 
@@ -35,6 +26,15 @@ int main(int argc, char** argv) {
   }
 
   *b = 34;
+
+  pid_t childPid = fork();
+
+  if (childPid == -1) {
+    fprintf(stderr, "fork error.\n");
+    exit(EXIT_ERR_FORK_FAILED);
+  }
+
+  bool isChildProcess = childPid == 0;
 
   if (isChildProcess) {
     a = 100;
