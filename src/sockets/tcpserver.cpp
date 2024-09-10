@@ -24,6 +24,9 @@
 #define EXIT_ERR_SOCK_WRITE 5
 #define EXIT_ERR_SOCK_READ 6
 #define EXIT_ERR_SOCK_CLOSE 7
+#define EXIT_ERR_SET_SOCK_OPT 8
+
+int listenfd;
 
 char *bin2hex(const unsigned char *input, size_t len) {
   char *result;
@@ -47,8 +50,19 @@ char *bin2hex(const unsigned char *input, size_t len) {
   return result;
 }
 
+void signal_handler(int signal) {
+  printf("Signal received, cleaning up...\n");
+
+  if (close(listenfd) < 0) {
+    fprintf(stderr, "socket close failed.\n");
+    exit(EXIT_ERR_SOCK_CLOSE);
+  }
+
+  exit(EXIT_SUCCESS);
+}
+
 int main(int argc, char **argv) {
-  int listenfd, connfd, bytesread;
+  int connfd, bytesread;
   struct sockaddr_in servaddr;
   uint8_t recvline[MAXLINE + 1];
 
@@ -62,6 +76,12 @@ int main(int argc, char **argv) {
   servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
   servaddr.sin_port = htons(SERVER_PORT);
 
+  int one = 1;
+  if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one)) < 0) {
+    fprintf(stderr, "set socket option failed.\n");
+    exit(EXIT_ERR_SET_SOCK_OPT);
+  }
+
   // Associate the server IPv4 address with the socket.
   if ((bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr))) < 0) {
     fprintf(stderr, "socket bind failed.\n");
@@ -73,15 +93,28 @@ int main(int argc, char **argv) {
     exit(EXIT_ERR_SOCK_LISTEN);
   }
 
+  signal(SIGABRT, signal_handler);
+  signal(SIGINT, signal_handler);
+  signal(SIGTERM, signal_handler);
+
   while (true) {
     struct sockaddr_in addr;
     socklen_t addr_len;
+    char client_address[MAXLINE + 1];
+    char client_port[MAXLINE + 1];
 
     // Accept blocks until an incoming connection arrives.
     // It returns a "file descriptor" to the connection.
-    printf("waiting for a connection on port %d", SERVER_PORT);
+    printf("waiting for a connection on port %d\n", SERVER_PORT);
     fflush(stdout);
-    connfd = accept(listenfd, (struct sockaddr *)nullptr, nullptr);
+    connfd = accept(listenfd, (struct sockaddr *)&addr, &addr_len);
+
+    // Read client address (convert from network format to printable format).
+    inet_ntop(AF_INET, &addr, client_address, MAXLINE);
+    printf("Client connecting from: %s\n", client_address);
+
+    // inet_ntop(AF_INET, &addr.sin_port, client_port, MAXLINE);
+    printf("Client port: %i\n", addr.sin_port);
 
     memset(recvline, 0, MAXLINE);
     // Read from the connected socket.
