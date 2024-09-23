@@ -13,18 +13,16 @@ private:
   int dfs(int i, int product, vector<int> nums, bool isInSubArray,
           unordered_map<int, int> &cache) {
     int size = nums.size() - i;
+    if (size <= 0 && !isInSubArray)
+      return -2147483647 - 1;
     if (size <= 0 || product == 0)
       return product;
-    if (cache.find(i) != cache.end()) {
-      return cache[i];
-    }
     if (isInSubArray) {
-      cache[i] = max(product * nums[i],
-                     dfs(i + 1, product * nums[i], nums, true, cache));
+      return max(product * nums[i],
+                 dfs(i + 1, product * nums[i], nums, true, cache));
     } else {
-      cache[i] = max(dfs(i + 1, product * nums[i], nums, true, cache),
-                     dfs(i + 1, product, nums, false, cache));
+      return max({nums[i], dfs(i + 1, product * nums[i], nums, true, cache),
+                  dfs(i + 1, product, nums, false, cache)});
     }
-    return cache[i];
   }
 };
