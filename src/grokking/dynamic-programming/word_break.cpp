@@ -1,4 +1,4 @@
-class Solution {
+class SolutionRecursive {
  public:
   bool wordBreak(string s, vector<string>& wordDict) {
     bool isValid = false;
@@ -20,5 +20,31 @@ class Solution {
       if (dfs(s, i + currWord.size(), wordDict, wordDict[j])) isValid = true;
     }
     return isValid;
+  }
+};
+
+class SolutionBottomUp {
+ public:
+  bool wordBreak(string s, vector<string>& wordDict) {
+    vector<bool> valid(s.size(), false);
+    for (int i = s.size() - 1; i >= 0; i--) {
+      int remainingSize = s.size() - i;
+      for (int j = 0; j < wordDict.size(); j++) {
+        if (remainingSize >= wordDict[j].size()) {
+          bool possiblePath = true;
+          for (int k = 0; k < wordDict[j].size(); k++) {
+            if (wordDict[j][k] != s[i + k]) {
+              possiblePath = false;
+              break;
+            }
+          }
+          if (possiblePath && (i + wordDict[j].size() == s.size() ||
+                               valid[i + wordDict[j].size()])) {
+            valid[i] = true;
+          }
+        }
+      }
+    }
+    return valid[0];
   }
 };
