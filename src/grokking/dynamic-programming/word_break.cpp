@@ -1,49 +1,24 @@
 class Solution {
-public:
-  bool wordBreak(string s, vector<string> &wordDict) {
-    if (s.length() == 0 || wordDict.size() == 0)
-      return false;
+ public:
+  bool wordBreak(string s, vector<string>& wordDict) {
+    bool isValid = false;
     for (int i = 0; i < wordDict.size(); i++) {
-      while (true) {
-        // find instance of current word, recording where it is
-        int start = 0, end = 0;
-        bool wordExists = false;
-        bool isInsidePossibleWord = false;
-        for (int j = 0; j < s.length(); j++) {
-          if (s[j] == wordDict[i][0] && !isInsidePossibleWord) {
-            isInsidePossibleWord = true;
-            start = j;
-            if (s[j] == wordDict[i][wordDict[i].length() - 1]) {
-              wordExists = true;
-              end = j;
-              break;
-            }
-          } else if (isInsidePossibleWord) {
-            if (s[j] == wordDict[i][wordDict[i].length() - 1]) {
-              wordExists = true;
-              end = j;
-              break;
-            } else if (s[j] != wordDict[i][j - start]) {
-              isInsidePossibleWord = false;
-            }
-          }
-        }
-
-        if (wordExists) {
-          // if there is an instance, remove it from s
-          string temp = "";
-          for (int j = 0; j < s.length(); j++) {
-            if (j < start || j > end) {
-              temp += s[j];
-            }
-          }
-          s = temp;
-        } else {
-          // otherwise break, check next word in dict
-          break;
-        }
-      }
+      if (dfs(s, 0, wordDict, wordDict[i])) isValid = true;
     }
-    return s == "";
+    return isValid;
+  }
+
+  bool dfs(string s, int i, vector<string> wordDict, string currWord) {
+    int size = s.size() - i;
+    if (size <= 0) return true;
+    if (currWord.size() > size) return false;
+    for (int j = 0; j < currWord.size(); j++) {
+      if (currWord[j] != s[i + j]) return false;
+    }
+    bool isValid = false;
+    for (int j = 0; j < wordDict.size(); j++) {
+      if (dfs(s, i + currWord.size(), wordDict, wordDict[j])) isValid = true;
+    }
+    return isValid;
   }
 };
