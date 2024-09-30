@@ -29,3 +29,42 @@ public:
     return result;
   }
 };
+
+class Solution {
+public:
+  string longestPalindrome(string s) {
+    if (s.length() == 0)
+      return "";
+    if (s.length() == 1)
+      return s;
+    int start = 0, end = 0;
+    for (int i = 0; i < s.length(); i++) {
+      // check odd sized palindromes
+      int a = i, b = i;
+      while (a >= 0 && b < s.length() && s[a] == s[b]) {
+        if (b - a + 1 > end - start + 1) {
+          start = a;
+          end = b;
+        }
+        a--;
+        b++;
+      }
+
+      // check even sized palindromes
+      a = i, b = i + 1;
+      while (a >= 0 && b < s.length() && s[a] == s[b]) {
+        if (b - a + 1 > end - start + 1) {
+          start = a;
+          end = b;
+        }
+        a--;
+        b++;
+      }
+    }
+    string output = "";
+    for (int i = start; i <= end; i++) {
+      output += s[i];
+    }
+    return output;
+  }
+};
