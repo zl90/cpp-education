@@ -23,3 +23,28 @@ public:
     return maxLength;
   }
 };
+
+class OptimalSolution {
+public:
+  int lengthOfLIS(vector<int> &nums) {
+    vector<int> temp{nums[0]};
+    for (int i = 1; i < nums.size(); i++) {
+      if (nums[i] <= temp.back()) {
+        // binary search to find first number that is >= nums[i]
+        int a = 0, b = temp.size() - 1;
+        while (a <= b) {
+          int middle = (a + b) / 2;
+          if (temp[middle] < nums[i]) {
+            a = middle + 1;
+          } else {
+            b = middle - 1;
+          }
+        }
+        temp[a] = nums[i];
+      } else {
+        temp.push_back(nums[i]);
+      }
+    }
+    return temp.size();
+  }
+};
